@@ -5,12 +5,17 @@
 # Version:		1.12
 # Description:	start level1
 ######################################################################################
-scoreboard players set @a levelLoading 2
-effect @a minecraft:resistance 5 5
+scoreboard players set @a[m=!3] levelLoading 2
+effect @a[m=!3] minecraft:resistance 5 5
+kill @e[type=item]
 
-execute @e[name=LastPlayerPosition,type=armor_stand] ~ ~ ~ teleport @a ~ ~ ~ ~ ~
-kill @e[name=LastPlayerPosition]
+title @a actionbar ["",{"text":"Stage ","color":"white","bold":true},{"score":{"name":"@a[c=1]","objective":"level"},"color":"white","bold":true}]
 
-execute @a[c=1] ~ ~ ~ scoreboard players tag @e[type=armor_stand,name=node] remove checkpoint
-execute @a[c=1] ~ ~ ~ scoreboard players tag @e[type=armor_stand,name=node,c=-1] add checkpoint
+function game1:lastPlayerPosition
+
+
+
+scoreboard players tag @e[type=armor_stand,name=node] remove checkpoint
+execute @a[m=!3,c=1] ~ ~ ~ scoreboard players tag @e[type=armor_stand,name=node,c=-1] add checkpoint
+execute @e[tag=checkpoint] ~ ~ ~ setworldspawn ~ ~ ~
 
