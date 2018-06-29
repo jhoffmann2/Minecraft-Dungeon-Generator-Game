@@ -69,3 +69,7 @@ scoreboard players reset @a mineGold
 scoreboard players reset @a villagerTrade
 scoreboard players reset @a enchantItem
 scoreboard players reset @a dealDamage
+
+execute @a ~ ~ ~ scoreboard players operation @a highScore > @s points
+execute @a ~ ~ ~ scoreboard players operation @a highStage > @s level
+

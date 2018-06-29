@@ -6,6 +6,9 @@
 # Description:	set up default scores for important settings
 ######################################################################################
 
+clear @a[m=!3]
+give @a[m=!3] written_book 1 0 {pages:["[\"\",{\"text\":\"\\n        Welcome To\",\"color\":\"dark_red\"},{\"text\":\"\\n \",\"color\":\"dark_red\",\"underlined\":true},{\"text\":\"  The Conducting  \",\"color\":\"dark_red\",\"bold\":true,\"underlined\":true},{\"text\":\"\\n\\n  A Minecraft Roguelite\\n  by Jordan Hoffmann\",\"italic\":true,\"color\":\"none\",\"bold\":false,\"underlined\":false},{\"text\":\"\\n                             \",\"color\":\"dark_red\",\"underlined\":true,\"italic\":false},{\"text\":\"\\n\\nHigh Score: \",\"color\":\"dark_gray\",\"underlined\":false},{\"score\":{\"name\":\"@a[m=!3,c=1]\",\"objective\":\"highScore\"},\"color\":\"none\"},{\"text\":\"\\nHighest Stage: \",\"color\":\"dark_gray\",\"hoverEvent\":{\"action\":\"show_entity\",\"value\":\"{id:(ID),name:(Name),type:(Type)}\"}},{\"score\":{\"name\":\"@a[m=!3,c=1]\",\"objective\":\"highStage\"},\"color\":\"none\"}]"],title:"The Conducting",author:"The Puppeteer"}
+
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~ 1 ~ minecraft:air
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~ 2 ~ minecraft:air
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~ 0 ~ minecraft:concrete 15
@@ -224,12 +227,13 @@ execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~ 2 ~-1
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~1 2 ~ minecraft:concrete 15
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ setblock ~-1 2 ~ minecraft:concrete 15
 
-gamemode adventure @a[m=!3]
+execute @e[m=!2] ~ ~ ~ gamemode adventure @s[m=!3]
 execute @e[name=node,tag=trunk,score_ID=1,score_ID_min=1] ~ ~ ~ teleport @a[m=!3] ~ 1 ~ ~ ~
 
 function game1:villager_trades/create_rtrades
 function dungeon_genorator:setup
 function dungeon_genorator:rooms/build_trunk
+function game1:hidden_rooms/select_room_level
 
 scoreboard objectives remove level
 scoreboard objectives remove points

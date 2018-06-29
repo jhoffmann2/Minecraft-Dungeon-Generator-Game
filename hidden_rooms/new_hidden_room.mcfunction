@@ -22,7 +22,7 @@ execute @e[name=node,type=armor_stand,tag=currentNode] ~ ~ ~ execute @s[tag=zNeg
 function dungeon_genorator:rooms/nodes/tag_handeling/check_availability
 
 #if (valid_location) -> {place structure_block}
-execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ summon armor_stand ~ ~ ~ {CustomName:"hiddenRoom",Tags:["roomBlock"],NoGravity:1b,Small:1,Marker:1b,Invisible:1,Invulnerable:1,NoBasePlate:1}
+execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ summon armor_stand ~ ~ ~ {CustomName:"hiddenRoom",Tags:["roomBlock","extraRoom"],NoGravity:1b,Small:1,Marker:1b,Invisible:1,Invulnerable:1,NoBasePlate:1}
 
 execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ execute @e[name=node,type=armor_stand,tag=currentNode] ~ ~ ~ execute @s[tag=xPos] ~ ~ ~ setblock ~ ~ ~ structure_block 0 replace {name:"hidden_room",rotation:"CLOCKWISE_180",posX:4,posY:-4,posZ:4,mirror:"NONE",ignoreEntities:0b,mode:"LOAD",showboundingbox:0b,sizeX:9,sizeY:9,sizeZ:9}
 
@@ -33,7 +33,6 @@ execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ execute @e[
 execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ execute @e[name=node,type=armor_stand,tag=currentNode] ~ ~ ~ execute @s[tag=zNeg] ~ ~ ~ setblock ~ ~ ~ structure_block 0 replace {name:"hidden_room",rotation:"CLOCKWISE_90",posX:4,posY:-4,posZ:-4,mirror:"NONE",ignoreEntities:0b,mode:"LOAD",showboundingbox:0b,sizeX:9,sizeY:9,sizeZ:9}
 
 tp @a @e[name=editor,type=armor_stand,tag=invalid_location]
-execute @e[name=editor,type=armor_stand,tag=invalid_location] ~ ~ ~ say invalid location
 
 #tag handeling
 execute @e[name=editor,type=armor_stand,tag=!invalid_location] ~ ~ ~ scoreboard players set @e[name=node,type=armor_stand,tag=currentNode] directionCount 3

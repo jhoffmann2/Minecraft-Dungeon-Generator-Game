@@ -4,8 +4,8 @@ scoreboard players set block3PlacementRate controls 70
 scoreboard players set block4PlacementRate controls 70
 scoreboard players set block5PlacementRate controls 70
 scoreboard players set block6PlacementRate controls 70
-scoreboard players set block7PlacementRate controls 40
-scoreboard players set block8PlacementRate controls 70
+scoreboard players set block7PlacementRate controls 60
+scoreboard players set block8PlacementRate controls 100
 scoreboard players set block9PlacementRate controls 70
 scoreboard players set block10PlacementRate controls 70
 

@@ -8,7 +8,6 @@
 
 
 #Always Run
-    
     #Dungeon Loop Function
     function dungeon_genorator:loop_function_noUI
     
@@ -16,15 +15,19 @@
         #build next level if player steps through checkpoint
         execute @a[m=!3,score_level_min=2,c=1] ~ ~ ~ execute @s[score_levelLoading_min=0,score_levelLoading=0] ~ ~ ~ function game1:buildNextLevel
         
-        #try to build hidden room if level >= 4
-        execute @a[m=!3,score_level_min=4,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1] ~ ~ ~ function game1:hidden_rooms/new_hidden_room if @e[name=editor,type=armor_stand,tag=!hiddenRoomExists]
+        #try to build hidden room if level >= selected levelID and there isn't already a hidden room
+        scoreboard players operation @a level -= selectedLevel levelID
+        execute @a[m=!3,score_level_min=0,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1] ~ ~ ~ function game1:hidden_rooms/new_hidden_room if @e[name=editor,type=armor_stand,tag=!hiddenRoomExists]
+        scoreboard players operation @a level += selectedLevel levelID
         
         #start next level if the level has been built
-        execute @a[m=!3,score_level_min=1,score_level=1,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1] ~ ~ ~ function game1:level1
+        execute @a[m=!3,score_level_min=1,score_level=1,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1,tag=!being_reborn] ~ ~ ~ function game1:level1
+        execute @a[m=!3,score_level_min=1,score_level=1,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1,tag=being_reborn] ~ ~ ~ function game1:custom_potions/level1_reborn
+        
         execute @a[m=!3,score_level_min=2,tag=!loading,c=1] ~ ~ ~ execute @s[score_levelLoading_min=1,score_levelLoading=1] ~ ~ ~ function game1:startNextLevel
         
     #keep entities from drowning...
-    execute @e[type=!armor_stand] ~ ~ ~ effect @s[type=!Player] water_breathing 100000
+    execute @e[type=!armor_stand] ~ ~ ~ effect @s[type=!Player] water_breathing 100000 1 true
     
     #Update the Players Points
     function game1:update_points
@@ -46,11 +49,10 @@
     scoreboard players operation @e[tag=checkpoint] tickTimer %= temp tickTimer
     scoreboard players reset temp tickTimer
     
-
+    #checkpoint particles
     scoreboard objectives add isAir dummy
     scoreboard players add @e[tag=checkpoint] isAir 0
     stats entity @e[tag=checkpoint] set AffectedBlocks @s isAir
-    #execute @e[tag=checkpoint] ~ ~ ~ testforblock ~ ~ ~ air
     execute @e[tag=checkpoint] ~ ~ ~ fill ~ ~-1 ~ ~ ~1 ~ minecraft:structure_void 0 replace minecraft:air
     execute @e[tag=checkpoint,score_tickTimer=0,score_tickTimer_min=0,score_isAir_min=3] ~ ~ ~ particle endRod ~ ~0.5 ~ 0 1.5 0 0.01 1 force
     execute @e[tag=checkpoint,score_tickTimer=0,score_tickTimer_min=0,score_isAir=2] ~ ~ ~ particle endRod ~ ~0.5 ~ 1 1.5 1 0.01 14 force
@@ -62,8 +64,8 @@
     
     #Checkpoint Warp
     scoreboard players add @a[m=!3] warp 0
-    execute @e[tag=checkpoint,score_isAir_min=3] ~ ~-4 ~ scoreboard players set @a[m=!3,dy=6,score_warp_min=0,score_warp=0] warp 1
-    execute @e[tag=checkpoint,score_isAir=2] ~-1 ~-3 ~-1 scoreboard players set @a[m=!3,dy=5,dx=3,dz=3,score_warp_min=0,score_warp=0] warp 1
+    execute @e[tag=checkpoint,score_isAir_min=3] ~ ~-3 ~ scoreboard players set @a[m=!3,dy=6,score_warp_min=0,score_warp=0] warp 1
+    execute @e[tag=checkpoint,score_isAir=2] ~-1 ~-2 ~-1 scoreboard players set @a[m=!3,dy=4,dx=3,dz=3,score_warp_min=0,score_warp=0] warp 1
     
     execute @a[m=!3,score_warp_min=1,score_warp=1] ~ ~ ~ playsound minecraft:entity.zombie_villager.converted ambient @a[m=!3] ~ ~ ~ 1000
     execute @a[m=!3,score_warp_min=1,score_warp=1] ~ ~ ~ scoreboard players add @a[m=!3] level 1
@@ -91,11 +93,13 @@
     execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ function game1:initiate_game
     execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add tickTimer dummy
     execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add Death deathCount
-    execute @a[m=!3,tag=!ranStartDG] ~ ~ ~ scoreboard objectives add quitG1 stat.leaveGame
-    execute @a[m=!3,tag=!ranStartDG] ~ ~ ~ scoreboard objectives add playerID dummy
-    execute @a[m=!3,tag=!ranStartDG] ~ ~ ~ scoreboard players add currentID playerID 1
-    execute @a[m=!3,tag=!ranStartDG] ~ ~ ~ scoreboard players operation @s playerID = currentID playerID
-    execute @a[m=!3,tag=!ranStartDG] ~ ~ ~ scoreboard objectives add playerID dummy
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add quitG1 stat.leaveGame
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add playerID dummy
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add highScore dummy
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add highStage dummy
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard players add currentID playerID 1
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard players operation @s playerID = currentID playerID
+    execute @a[m=!3,tag=!ranStartG1] ~ ~ ~ scoreboard objectives add playerID dummy
 scoreboard players tag @a[m=!3,tag=!ranStartG1] add ranStartG1
 
 #Run every time a player joins game

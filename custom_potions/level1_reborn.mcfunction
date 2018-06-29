@@ -5,6 +5,8 @@
 # Version:		1.12
 # Description:	start level1
 ######################################################################################
+kill @e[name=hiddenRoom]
+scoreboard players tag @a[m=!3] remove being_reborn
 scoreboard players set @a[m=!3] levelLoading 2
 title @a[m=!3] clear
 kill @e[type=item]
@@ -21,6 +23,9 @@ effect @a[m=!3] minecraft:saturation 1 19
 gamerule naturalRegeneration true
 scoreboard objectives remove vampireHeal
 scoreboard objectives remove angerDammage
+scoreboard objectives remove AppleTimer
+scoreboard objectives remove entHeal
+scoreboard players tag @a[m=!3] remove isDrunk
 
 replaceitem entity @a[m=!3] slot.enderchest.0 minecraft:air
 replaceitem entity @a[m=!3] slot.enderchest.1 minecraft:air
